@@ -8,7 +8,7 @@ import (
 
 type Event struct {
 	pid    ProxyId
-	opcode uint32
+	Opcode uint32
 	data   []byte
 	scms   []syscall.SocketControlMessage
 	off    int
@@ -38,7 +38,7 @@ func (c *Context) readEvent() (*Event, error) {
 	}
 
 	ev.pid = ProxyId(order.Uint32(buf[0:4]))
-	ev.opcode = uint32(order.Uint16(buf[4:6]))
+	ev.Opcode = uint32(order.Uint16(buf[4:6]))
 	size := uint32(order.Uint16(buf[6:8]))
 
 	// subtract 8 bytes from header

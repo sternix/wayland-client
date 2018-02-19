@@ -23,7 +23,7 @@ type Context struct {
 	exitChan     chan bool
 }
 
-func (ctx *Context) register(proxy Proxy) {
+func (ctx *Context) Register(proxy Proxy) {
 	ctx.mu.Lock()
 	defer ctx.mu.Unlock()
 	ctx.currentId += 1

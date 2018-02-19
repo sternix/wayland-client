@@ -13,7 +13,7 @@ type Request struct {
 	oob    []byte
 }
 
-func (context *Context) sendRequest(proxy Proxy, opcode uint32, args ...interface{}) (err error) {
+func (context *Context) SendRequest(proxy Proxy, opcode uint32, args ...interface{}) (err error) {
 	req := Request{
 		pid: proxy.Id(),
 		opcode: opcode,

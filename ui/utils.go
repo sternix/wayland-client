@@ -25,14 +25,3 @@ func TempFile(size int64) (*os.File, error) {
 	}
 	return file, nil
 }
-
-//https://github.com/golang/exp/blob/master/shiny/driver/internal/swizzle/swizzle_common.go
-func BGRA(p []byte) {
-	if len(p)%4 != 0 {
-		panic("input slice length is not a multiple of 4")
-	}
-
-	for i := 0; i < len(p); i += 4 {
-		p[i+0], p[i+2] = p[i+2], p[i+0]
-	}
-}

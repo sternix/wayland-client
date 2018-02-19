@@ -3,15 +3,15 @@ package main
 import (
 	"flag"
 	"log"
+	"net/http"
+	_ "net/http/pprof"
 	"os"
 	"runtime/debug"
-	_ "net/http/pprof"
-	"net/http"
 )
 
 import (
-	"github.com/sternix/wl"
-	"github.com/sternix/wl/ui"
+	"github.com/dkolbly/wl"
+	"github.com/dkolbly/wl/ui"
 )
 
 func init() {
@@ -29,7 +29,6 @@ func main() {
 	go func() {
 		log.Println(http.ListenAndServe("localhost:6060", nil))
 	}()
-
 
 	exitChan := make(chan bool, 10)
 
@@ -55,16 +54,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	keh := func(ev interface{}) {
-		if kev, ok := ev.(wl.KeyboardKeyEvent); ok {
-			if kev.Key == 16 {
-				exitChan <- true
-			}
-		}
-	}
-
-	kh := wl.HandlerFunc(keh)
-	display.Keyboard().AddKeyHandler(kh)
+	display.Keyboard().AddKeyHandler(quitter{exitChan})
 
 	window.Draw(img)
 
@@ -80,4 +70,14 @@ loop:
 	log.Print("Loop finished")
 	window.Dispose()
 	display.Disconnect()
+}
+
+type quitter struct {
+	ch chan bool
+}
+
+func (q quitter) HandleKeyboardKey(ev wl.KeyboardKeyEvent) {
+	if ev.Key == 16 {
+		q.ch <- true
+	}
 }

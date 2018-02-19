@@ -10,10 +10,10 @@ type TextCursorPosition struct {
 
 func NewTextCursorPosition(conn *Context) *TextCursorPosition {
 	ret := new(TextCursorPosition)
-	conn.register(ret)
+	conn.Register(ret)
 	return ret
 }
 
 func (p *TextCursorPosition) Notify(surface *Surface, x float32, y float32) error {
-	return p.Context().sendRequest(p, _TEXT_CURSOR_POSITION_NOTIFY, surface, x, y)
+	return p.Context().SendRequest(p, _TEXT_CURSOR_POSITION_NOTIFY, surface, x, y)
 }
